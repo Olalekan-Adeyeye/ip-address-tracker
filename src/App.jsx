@@ -1,8 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SearchBox from "./components/SearchBox";
 import "./App.css";
 import Map from "./components/Map";
-import { useGeolocated } from "react-geolocated";
 import axios from "axios";
 import ErrorMessage from "./components/ErrorMessage";
 import IPinfo from "./components/IPinfo";
@@ -10,16 +9,32 @@ import RefreshBtn from "./components/RefreshBtn";
 
 function App() {
   const [value, setValue] = useState("");
-  const { coords, isGeolocationAvailable, isGeolocationEnabled } =
-    useGeolocated({
-      positionOptions: {
-        enableHighAccuracy: true,
-      },
-      userDecisionTimeout: 5000,
-    });
-  const [ip, setIp] = useState();
+  const [ip, setIp] = useState("");
   const [isSearched, setIsSearched] = useState(false);
   const [err, setErr] = useState("");
+
+  const apiReq = (req) => {
+    axios
+      .get(
+        `https://geo.ipify.org/api/v2/country,city?apiKey=at_IAlQHZEUNUpXVay8vC6Izr98xR6uo&ipAddress=${req}`
+      )
+      .then((res) => {
+        setIp(res.data);
+        setIsSearched(false);
+      })
+      .catch((err) => setErr(err.message));
+  };
+
+  useEffect(() => {
+    axios
+      .get(
+        `https://geolocation-db.com/json/67273a00-5c4b-11ed-9204-d161c2da74ce`
+      )
+      .then((data) => {
+        apiReq(data.data.IPv4);
+      })
+      .catch((err) => setErr(err.message));
+  }, []);
 
   const handleChange = (e) => {
     setValue(e.target.value);
@@ -27,22 +42,10 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setErr("");
     setIp("");
+    setErr("");
     setIsSearched(true);
-    axios
-      .get(
-        `https://geo.ipify.org/api/v2/country,city?apiKey=at_IAlQHZEUNUpXVay8vC6Izr98xR6uo&ipAddress=${value}`
-      )
-      .then((res) => {
-        setIp(res.data);
-        setIsSearched(false);
-        console.log(ip);
-      })
-      .catch((err) => {
-        setErr(err.message);
-        console.log(err.message);
-      });
+    apiReq(value);
   };
 
   return (
@@ -58,7 +61,7 @@ function App() {
           {ip && (
             <IPinfo
               ipaddress={ip.ip}
-              location={ip.location.city}
+              location={`${ip.location.city}, ${ip.location.country}`}
               timezone={ip.location.timezone}
               isp={ip.isp}
             />
@@ -67,32 +70,18 @@ function App() {
       </header>
       <main>
         {ip ? (
-          <Map lat={ip.location.lat} long={ip.location.lng} />
+          isSearched ? (
+            <div className="error-msg">Loading...</div>
+          ) : (
+            <Map lat={ip.location.lat} long={ip.location.lng} />
+          )
         ) : err ? (
           <>
-            <ErrorMessage />
+            <ErrorMessage value={value} />
           </>
-        ) : isSearched ? (
+        ) : (
           <div className="error-msg">Loading...</div>
-        ) : null}
-
-        {!isSearched ? (
-          !ip ? (
-            isGeolocationAvailable ? (
-              isGeolocationEnabled ? (
-                coords ? (
-                  <Map lat={coords.latitude} long={coords.longitude} />
-                ) : (
-                  <div className="error-msg">Loading...</div>
-                )
-              ) : (
-                <ErrorMessage />
-              )
-            ) : (
-              <ErrorMessage />
-            )
-          ) : null
-        ) : null}
+        )}
       </main>
     </div>
   );

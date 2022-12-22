@@ -1,7 +1,7 @@
 import React from "react";
 import RefreshBtn from "./RefreshBtn";
 
-const ErrorMessage = () => {
+const ErrorMessage = (value, ) => {
   const handleClick = (e) => {
     e.preventDefault()
     window.location.reload(true)
@@ -15,7 +15,7 @@ const ErrorMessage = () => {
           <li>Geolocation is available/enabled</li>
           <li>Active network connection</li>
         </ul>
-        <RefreshBtn handleClick={handleClick} />
+        <RefreshBtn handleClick={!value?  handleClick: null} />
       </div>
     </div>
   );
