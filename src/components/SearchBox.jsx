@@ -1,5 +1,3 @@
-import React, { useState } from "react";
-
 const SearchBox = ({ value, handleSubmit, handleChange }) => {
   const search = ">";
   return (
@@ -12,7 +10,7 @@ const SearchBox = ({ value, handleSubmit, handleChange }) => {
         placeholder="Search for any IP address or domain"
         required
       />
-      <button type="submit" className="submit-btn"><img src="src\assets\images\icon-arrow.svg" alt="go" /></button>
+      <button type="submit" className="submit-btn"><img src='./assets/images/icon-arrow.svg' alt="go" /></button>
     </form>
   );
 };
