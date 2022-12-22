@@ -19,6 +19,7 @@ header {
   padding: 1em 0px 3em 0px;
   background-repeat: no-repeat;
   background-size: cover;
+  background-color: rgba(0, 0, 0, 0.5);
   background-image: url(./assets/images/pattern-bg.png);
 }
 
