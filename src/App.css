@@ -66,6 +66,9 @@ input {
   width: 10%;
   border-radius: 0px 10px 10px 0px;
   background-color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 button img {
