@@ -5,7 +5,6 @@ import Map from "./components/Map";
 import axios from "axios";
 import ErrorMessage from "./components/ErrorMessage";
 import IPinfo from "./components/IPinfo";
-import RefreshBtn from "./components/RefreshBtn";
 
 function App() {
   const [value, setValue] = useState("");
