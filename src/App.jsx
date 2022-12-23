@@ -12,12 +12,13 @@ function App() {
   const [isSearched, setIsSearched] = useState(false);
   const [err, setErr] = useState("");
 
-  const apiReq = (req) => {
+  const apiReq = (req = "") => {
     axios
       .get(
-        `https://geo.ipify.org/api/v2/country,city?apiKey=at_IAlQHZEUNUpXVay8vC6Izr98xR6uo&ipAddress=${req}`
+        `https://geo.ipify.org/api/v2/country,city?apiKey=at_IAlQHZEUNUpXVay8vC6Izr98xR6uo&domain=${req}`
       )
       .then((res) => {
+        console.log(res.data)
         setIp(res.data);
         setIsSearched(false);
       })
@@ -25,14 +26,7 @@ function App() {
   };
 
   useEffect(() => {
-    axios
-      .get(
-        `https://geolocation-db.com/json/67273a00-5c4b-11ed-9204-d161c2da74ce`
-      )
-      .then((data) => {
-        apiReq(data.data.IPv4);
-      })
-      .catch((err) => setErr(err.message));
+   apiReq()
   }, []);
 
   const handleChange = (e) => {
