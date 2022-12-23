@@ -11,7 +11,7 @@ const Map = ({ lat = 13.54232, long = 0.72934 }) => {
     iconUrl: iconMarker,
     shadowUrl: iconShadow,
     iconSize: [30, 35],
-    iconAnchor: [12, 41],
+    iconAnchor: [12, 45],
   });
 
   return (
