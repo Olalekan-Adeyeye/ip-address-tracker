@@ -15,7 +15,7 @@ function App() {
   const apiReq = (req = "") => {
     axios
       .get(
-        `https://geo.ipify.org/api/v2/country,city?apiKey=at_IAlQHZEUNUpXVay8vC6Izr98xR6uo&domain=${req}`
+        `https://geo.ipify.org/api/v2/country,city?apiKey=at_AlbBdwk9jiqFPsluLMY6m0MYMA0oA&domain=${req}`
       )
       .then((res) => {
         setIp(res.data);
